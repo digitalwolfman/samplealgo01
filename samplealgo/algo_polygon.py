@@ -25,16 +25,16 @@ def _get_polygon_prices(symbols, end_dt, max_workers=5):
     _from = start_dt.strftime('%Y-%m-%d')
     to = end_dt.strftime('%Y-%m-%d')
 
-    def historic_agg(symbol):
-        return api.polygon.historic_agg(
-            'day', symbol, _from=_from, to=to).df.sort_index()
+    def historic_agg_v2(symbol):
+        return api.polygon.historic_agg_v2(
+            symbol, multiplier=1,  timespan='day', _from=_from, to=to).df.sort_index()
 
     with concurrent.futures.ThreadPoolExecutor(
             max_workers=max_workers) as executor:
         results = {}
         future_to_symbol = {
             executor.submit(
-                historic_agg,
+                historic_agg_v2,
                 symbol): symbol for symbol in symbols}
         for future in concurrent.futures.as_completed(future_to_symbol):
             symbol = future_to_symbol[future]
