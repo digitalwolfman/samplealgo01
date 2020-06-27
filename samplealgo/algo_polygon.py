@@ -27,7 +27,7 @@ def _get_polygon_prices(symbols, end_dt, max_workers=5):
 
     def historic_agg_v2(symbol):
         return api.polygon.historic_agg_v2(
-            symbol, multiplier=1,  timespan='day', _from=_from, to=to).df.sort_index()
+            symbol, multiplier=1, timespan='day', _from=_from, to=to).df.sort_index()
 
     with concurrent.futures.ThreadPoolExecutor(
             max_workers=max_workers) as executor:
